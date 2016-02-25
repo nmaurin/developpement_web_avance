@@ -1,0 +1,64 @@
+<!DOCTYPE html><!--Déplacement d'un carré rouge mais pas avant un décompte de 10secondes et une possibité de le lancer manuelement-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style> 
+#manuel {
+    width: 100px;
+    height: 100px;
+    background: red;
+    position: relative;
+    animation: mouvement 5s infinite;
+    animation-delay: 11s;
+}
+
+@keyframes mouvement {
+    0%   {background-color:red; left:0px; top:0px;}
+    25%  {background-color:yellow; left:800px; top:0px;}
+    50%  {background-color:blue; left:800px; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:0px; top:0px;}
+  }
+</style>
+</head>
+<body>
+
+<p>L'application commencera dans : <div id="le_compteur"></div></p>
+<p>Cliquez sur le bouton pour commencer sans plus attentre!</p>
+<button onclick="manuel()">Lancer le carré!</button>
+
+<script>
+function manuel() {
+    document.getElementById("manuel").style.animationDelay = "2s";
+}
+</script>
+
+
+<div id="manuel"></div>
+
+</body>
+<script type="text/javascript">
+		var interval;
+		var i =10; //compteur 
+		function timer() {
+		  interval = setInterval(compteur, 1000);	//id(que l'on utilise dans le div de l'HTML) = setinterval(nom d'une fonction le callback; inteval(en mms))
+		}
+
+		function compteur() {
+		  var element = document.getElementById("le_compteur");
+		  if(i=>10)	{
+		  element.textContent = i;
+		  i--;
+		  if(i<=0)	{
+			element.textContent = i+1;
+			i=0;
+			}	
+		  }	 
+		}
+
+		
+		timer();
+		</script>
+
+</html>
+

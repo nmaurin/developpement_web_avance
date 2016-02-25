@@ -1,0 +1,133 @@
+<!DOCTYPE html><!--Déplacement de 3 carrés rouge mais pas avant un décompte de 10secondes et une possibité de le lancer manuelement-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style> 
+#bouton	{
+	position: relative;
+	top:40%;
+	left:100px;
+	
+}
+
+
+#manuel1 {
+    width: 100px;
+    height: 100px;
+    background: red;
+    position: relative;
+    animation: mouvement1 5s infinite;
+    animation-delay: 11s;
+	animation-play-state: running;
+}
+
+
+@keyframes mouvement1 {
+    0%   {background-color:red; left:0px; top:0px;}
+    25%  {background-color:yellow; left:800px; top:0px;}
+    50%  {background-color:blue; left:800px; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:0px; top:0px;}
+  }
+  
+#manuel2	{
+    width: 100px;
+    height: 100px;
+    background: red;
+    position: relative;
+    animation: mouvement2 5s infinite;
+    animation-delay: 13s;
+    animation-play-state: running;
+}
+
+
+@keyframes mouvement2 {
+    0%   {background-color:red; left:10px; top:10px;}
+    25%  {background-color:yellow; left:800px; top:10px;}
+    50%  {background-color:blue; left:800px; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:0px; top:10px;}
+  }
+
+
+#manuel3	{
+    width: 100px;
+    height: 100px;
+    background: red;
+    position: relative;
+    animation: mouvement3 5s infinite;
+    animation-delay: 15s;
+    animation-play-state: running;
+}
+
+
+@keyframes mouvement3 {
+    0%   {background-color:red; left:20px; top:20px;}
+    25%  {background-color:yellow; left:800px; top:20px;}
+    50%  {background-color:blue; left:800px; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:0px; top:20px;}
+  }
+</style>
+</head>
+<body>
+
+<p>L'application commencera dans : <div id="le_compteur"></div></p>
+<p>Cliquez sur le bouton pour commencer sans plus attentre!</p>
+<button onclick="manuel()">Lancer le carré!</button>
+
+<div id="bouton">
+<button onclick="pause()">Pause</button>
+<button onclick="play()">Play</button>
+</div>
+<script>
+function manuel() { //lancement manuel des carrés
+	
+   document.getElementById("manuel1").style.animationDelay = "2s";
+    document.getElementById("manuel2").style.animationDelay = "4s";
+    document.getElementById("manuel3").style.animationDelay = "6s";
+
+}
+
+function pause()	{	//mettre sur pause : on replace running dans la balise css de pause1 par pause
+	document.getElementById("manuel1").style.animationPlayState = "paused";
+	document.getElementById("manuel2").style.animationPlayState = "paused";
+	document.getElementById("manuel3").style.animationPlayState = "paused";
+}
+function play()	{	//on met dans le css la balise pause1;2;3 à running
+	document.getElementById("manuel1").style.animationplaystate= "running";
+	document.getElementById("manuel2").style.animationPlayState = "running";
+	document.getElementById("manuel3").style.animationPlayState = "running";
+}
+</script>
+
+<div id="manuel1"></div>
+<div id="manuel2"></div>
+<div id="manuel3"></div>
+
+</body>
+<script type="text/javascript">//Création d'un compteur !
+		var interval;
+		var i =10; //compteur 
+		function timer() {
+		  interval = setInterval(compteur, 1000);	//id(que l'on utilise dans le div de l'HTML) = setinterval(nom d'une fonction le callback; inteval(en mms))
+		}
+
+		function compteur() {
+		  var element = document.getElementById("le_compteur");
+		  if(i=>10)	{
+		  element.textContent = i;
+		  i--;
+		  if(i<=0)	{
+			element.textContent = i+1;
+			i=0;
+			}	
+		  }	 
+		}
+
+		
+		timer();
+		</script>
+
+</html>
+

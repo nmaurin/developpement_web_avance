@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>	<!--Création d'un compteur-->
+	<head>
+        <meta charset="utf-8" />
+		<title>Compteur 10s</title>
+	</head>
+
+	<body >
+		<div id="le_compteur"></div>
+	</body>
+
+<script type="text/javascript">
+		var interval;
+		var i =1; //compteur 
+		function timer() {
+		  interval = setInterval(compteur, 1000);	//id(que l'on utilise dans le div de l'HTML) = setinterval(nom d'une fonction le callback; inteval(en mms))
+		}
+
+		function compteur() {
+		  var element = document.getElementById("le_compteur");
+		  if(i<=10)	{
+		  element.textContent = i;
+		  i++;
+		  }
+		 
+		}
+
+		
+		timer();
+		</script>
+</html>
