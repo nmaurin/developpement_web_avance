@@ -1,0 +1,49 @@
+<DOCTYPE html!>
+<html>
+<!-- Code html -->
+	<head>
+		<meta charset="utf-8" />
+		<title>L'animation avec SetInterval-1</title>
+	</head>
+	
+	<body>
+		<div id="animatedElem"></div>
+	</body>
+	
+<!--Code CSS -->
+	<style>
+		#animatedElem {
+			position:absolute;
+			width:100px;
+			height:100px;
+			background:red;
+			left:400px;
+		}
+	</style>
+	
+<!-- Code JS -->
+	<script type="text/javascript">
+		var elem = document.getElementById("animatedElem");
+		var left = 800;
+		var timer;
+		timer = setInterval(function()	{
+			console.log(left);
+			pausecomp(100);
+			elem.style.left = left + "px";
+			 left -= 10;
+			if( left < 0 ) {
+				clearInterval( timer );
+			}
+		},16); //on perd l'image toute les 16ms. Ce qui ne ralenti pas l'action.
+		
+		function pausecomp(millis)	{	//simulation d'une grosse fonction infulent sur la fuliditée des autres actions. 
+			var date = new Date();
+			var curDate = null;
+			do	{
+				curDate = new Date();
+			}while(curDate-date < millis);
+		}
+	</script>
+
+	
+</html>
