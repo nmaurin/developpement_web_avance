@@ -21,10 +21,11 @@
 			return;
 		}
 		var myInterval = setInterval(animate, 1000/30);
-		
+		//alert("myInt");
 		//Variables pour le personnage :
 		var perso = new Image();
 		perso.src = "c.png";
+		//alert("Perso crée");
 		var xPos = 0;
 		var yPos = 0;
 		var vitesse = 1;
@@ -32,14 +33,9 @@
 		var tailleMax = canvas.width/4;
 		var tailleActuelle = tailleMini;
 		
-		//variable position de la souris
-		var xSouris = event.clientX;
-		var ySouris = event.clientY;
 		
 		function animate(){
 		
-			
-			//Utiliser cette methode pour faire bouger en 3D un perso.
 		
 			//Travaille sur le personnage :
 			ctx.clearRect(0,0,canvas.width,canvas.heigth);	//réinitialisation du canvas
@@ -49,22 +45,24 @@
 			
 			ctx.drawImage(perso,0,0,128,128,xPos,yPos,tailleActuelle,tailleActuelle); 
 			//on récupère la portion : 128x128px de coordonnées [0,0]. On la place sur les coordonnées [xPos,yPos] du canvas et on l'agrandit de tailleActuelle*tailleActuelle px.
-
+			//alert("Perso au centre");
 			//Gestion de la vitesse du personnage :
 			var i;
 			for(i=0;i<80;i++){
-				if(xPos = canvas.width/2 + i & yPos = canvas.height/2 + i){//le perso se trouve vers le centre
+				if((xPos = canvas.width/2 + i) && (yPos = canvas.height/2 + i)){//le perso se trouve vers le centre
 					vitesse = 1;
 				}
-				if(xPos = canvas.width/4 + i & yPos = canvas.height/4 + i){//le perso se trouve entre les extrémités et le centre
+				else {
+					if((xPos = canvas.width/4 + i) && (yPos = canvas.height/4 + i)){//le perso se trouve entre les extrémités et le centre
 					vitesse = 2;
-				}
-				else{//le personnage est aux extrémités
-					vitesse = 3;
+					}
+					else{//le personnage est aux extrémités
+						vitesse = 3;
+					}
 				}
 			}
 			
-			//déplacement du pero :
+			//déplacement du perso :
 			canvas.addEventListener("keydown", function (event) {
   			if (event.defaultPrevented) {
     				return; // Should do nothing if the key event was already consumed.
@@ -72,18 +70,17 @@
   			switch (event.key) {
   				case 40 : //bas
   					if(yPos != canvas.height-1){//le personnage est dans le canvas
-  					var j;
-  					for(j=0;j<4;j++){
-	  					yPos = yPos - j*vitesse;//le personnage fait 4 pas vers le bas
-	  					xPos = xPos;
-	  					ctx.drawImage(perso,j*128,256,128,128,xPos,yPos,tailleActuelle,tailleActuelle);//on change à chaque pas le context de l'image
-	  					}
-	  				}
-	  					
+	  					var j;
+	  					for(j=0;j<4;j++){
+		  					yPos = yPos - j*vitesse;//le personnage fait 4 pas vers le bas
+		  					xPos = xPos;
+		  					ctx.drawImage(perso,j*128,256,128,128,xPos,yPos,tailleActuelle,tailleActuelle);//on change à chaque pas le context de l'image
+		  				}	
 	  				}
 	  				else{//on ne peut pas placer le personnage hors du canvas
 	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
-			ctx.fillText("Vous etes en bas du canvas",canvas.width,canvas.height)
+						ctx.fillText("Vous etes en bas du canvas",canvas.width,canvas.height);
+					}
 	  		
 	  				break;
   				case 38 : //haut
@@ -94,10 +91,11 @@
 	  					xPos = xPos;
 	  					ctx.drawImage(perso,j*128,384,128,128,xPos,yPos,tailleActuelle,tailleActuelle);
 	  					}
-	  				}
+	 				}
   					else{//on ne peut pas placer le personnage hors du canvas
 	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
 			ctx.fillText("Vous etes en haut du canvas",canvas.width,canvas.height);
+					}
   					break;
   				case 37 : //gauche
   					if(xPos != 1){
@@ -111,30 +109,38 @@
   					else{//on ne peut pas placer le personnage hors du canvas
 	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
 			ctx.fillText("Vous etes à gauche du canvas",canvas.width,canvas.height);
+					}
   					break;
   				case 39 : //droite
   					if(xPos != canvas.width){
-  					var j;
-  					for(j=0;j<4;j++){
-	  					yPos = yPos;
-	  					xPos = xPos + j*vitesse;
-	  					ctx.drawImage(perso,j*128,128,128,128,xPos,yPos,tailleActuelle,tailleActuelle);
-	  				}
+	  					var j;
+	  					for(j=0;j<4;j++){
+		  					yPos = yPos;
+		  					xPos = xPos + j*vitesse;
+		  					ctx.drawImage(perso,j*128,128,128,128,xPos,yPos,tailleActuelle,tailleActuelle);
+		  				}
+		  			}
   					else{//on ne peut pas placer le personnage hors du canvas
 	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
 			ctx.fillText("Vous etes à droite du canvas",canvas.width,canvas.height);
+					}
   					break;
   				default : 
   					return;//on ne bloque pas l'accés aux autres touches.
+  				}
   			event.preventDefault();
-			}, true);
+			},true);
   			
   			//Agrandissement du personnage :
 			canvas.addEventListener("click", function (event) {
+			//variable position de la souris
+			var xSouris = event.clientX;
+			var ySouris = event.clientY;
+		
   			if (event.defaultPrevented) {
     				return; // Should do nothing if the key event was already consumed.
   			}
-			if(xSouris = xPos & YSouris = yPos){//on effectue l'action si la souris se trouve sur le personnage.
+			if((xSouris == xPos) && (YSouris == yPos)){//on effectue l'action si la souris se trouve sur le personnage.
 	  			if (event.rightClick) {//click droit
 	  				tailleActuelle = tailleActuelle + 1;	//le peronnage grandi
 	  			}
