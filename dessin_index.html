@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Dessin</title>
+	</head>
+	<body>
+		<canvas width ="500" height="400" id="canvas_1" tabindex="0" style="border-style: solid; border-width: 2px; width: 500px;"></canvas>
+		
+	</body>
+	<script>
+	window.onload = function(){
+		var canvas = document.getElementById("canvas_1");
+		if(!canvas){
+			alert("Impossible de récupérer le canvas");
+			return;
+		}
+		var ctx = canvas.getContext('2d');
+		if(!ctx){
+			alert("Impossible de récupérer le context du canvas");
+			return;
+		}
+		var myInterval = setInterval(animate, 1000/30);
+		
+		//Variables pour le personnage :
+		var perso = new Image();
+		perso.src = "c.png";
+		var xPos = 0;
+		var yPos = 0;
+		var vitesse = 1;
+		var tailleMini = 50;
+		var tailleMax = canvas.width/4;
+		var tailleActuelle = tailleMini;
+		
+		//variable position de la souris
+		var xSouris = event.clientX;
+		var ySouris = event.clientY;
+		
+		function animate(){
+		
+			
+			//Utiliser cette methode pour faire bouger en 3D un perso.
+		
+			//Travaille sur le personnage :
+			ctx.clearRect(0,0,canvas.width,canvas.heigth);	//réinitialisation du canvas
+			
+			xPos = (canvas.width/2)-(tailleActuelle/2);//Calcul de la position actuelle
+			yPos = (canvas.height/2)-(tailleActuelle/2);	//On ce place au milieu du canvas
+			
+			ctx.drawImage(perso,0,0,128,128,xPos,yPos,tailleActuelle,tailleActuelle); 
+			//on récupère la portion : 128x128px de coordonnées [0,0]. On la place sur les coordonnées [xPos,yPos] du canvas et on l'agrandit de tailleActuelle*tailleActuelle px.
+
+			//Gestion de la vitesse du personnage :
+			var i;
+			for(i=0;i<80;i++){
+				if(xPos = canvas.width/2 + i & yPos = canvas.height/2 + i){//le perso se trouve vers le centre
+					vitesse = 1;
+				}
+				if(xPos = canvas.width/4 + i & yPos = canvas.height/4 + i){//le perso se trouve entre les extrémités et le centre
+					vitesse = 2;
+				}
+				else{//le personnage est aux extrémités
+					vitesse = 3;
+				}
+			}
+			
+			//déplacement du pero :
+			canvas.addEventListener("keydown", function (event) {
+  			if (event.defaultPrevented) {
+    				return; // Should do nothing if the key event was already consumed.
+  			}
+  			switch (event.key) {
+  				case 40 : //bas
+  					if(yPos != canvas.height-1){//le personnage est dans le canvas
+  					var j;
+  					for(j=0;j<4;j++){
+	  					yPos = yPos - j*vitesse;//le personnage fait 4 pas vers le bas
+	  					xPos = xPos;
+	  					ctx.drawImage(perso,j*128,256,128,128,xPos,yPos,tailleActuelle,tailleActuelle);//on change à chaque pas le context de l'image
+	  					}
+	  				}
+	  					
+	  				}
+	  				else{//on ne peut pas placer le personnage hors du canvas
+	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
+			ctx.fillText("Vous etes en bas du canvas",canvas.width,canvas.height)
+	  		
+	  				break;
+  				case 38 : //haut
+  					if(yPos != 1){
+  					var j;
+  					for(j=0;j<4;j++){
+	  					yPos = yPos + j*vitesse;
+	  					xPos = xPos;
+	  					ctx.drawImage(perso,j*128,384,128,128,xPos,yPos,tailleActuelle,tailleActuelle);
+	  					}
+	  				}
+  					else{//on ne peut pas placer le personnage hors du canvas
+	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
+			ctx.fillText("Vous etes en haut du canvas",canvas.width,canvas.height);
+  					break;
+  				case 37 : //gauche
+  					if(xPos != 1){
+  					var j;
+  					for(j=0;j<4;j++){
+	  					yPos = yPos;
+	  					xPos = xPos - 2*vitesse;
+	  					ctx.drawImage(perso,j*128,0,128,128,xPos,yPos,tailleActuelle,tailleActuelle);
+	  					}
+	  				}
+  					else{//on ne peut pas placer le personnage hors du canvas
+	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
+			ctx.fillText("Vous etes à gauche du canvas",canvas.width,canvas.height);
+  					break;
+  				case 39 : //droite
+  					if(xPos != canvas.width){
+  					var j;
+  					for(j=0;j<4;j++){
+	  					yPos = yPos;
+	  					xPos = xPos + j*vitesse;
+	  					ctx.drawImage(perso,j*128,128,128,128,xPos,yPos,tailleActuelle,tailleActuelle);
+	  				}
+  					else{//on ne peut pas placer le personnage hors du canvas
+	  					ctx.font = "18px Helvetica";	//font est une char de taille 18px et de police Helvetica
+			ctx.fillText("Vous etes à droite du canvas",canvas.width,canvas.height);
+  					break;
+  				default : 
+  					return;//on ne bloque pas l'accés aux autres touches.
+  			event.preventDefault();
+			}, true);
+  			
+  			//Agrandissement du personnage :
+			canvas.addEventListener("click", function (event) {
+  			if (event.defaultPrevented) {
+    				return; // Should do nothing if the key event was already consumed.
+  			}
+			if(xSouris = xPos & YSouris = yPos){//on effectue l'action si la souris se trouve sur le personnage.
+	  			if (event.rightClick) {//click droit
+	  				tailleActuelle = tailleActuelle + 1;	//le peronnage grandi
+	  			}
+	  			else{
+	  				tailleActuelle = tailleActuelle - 1; //le personnage rétréci
+	  			}
+  			}
+  			event.preventDefault();
+			}, true);
+						
+		}
+		
+	}
+	</script>	
+</html>
